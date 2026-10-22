@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar mascota | Huellas Sanas</title>
+  <link rel="stylesheet" href="{% static 'veterinaria/styles.css' %}">
+</head>
+<body class="register-body">
+  <div class="register-shell">
+    <aside class="register-visual">
+      <div class="register-pill">🐾 Huellas Sanas</div>
+      <div class="cat-figure" aria-label="gato mirando al formulario">
+        <div class="cat-head">
+          <span class="cat-ear cat-ear-left"></span>
+          <span class="cat-ear cat-ear-right"></span>
+          <span class="cat-eye cat-eye-left"></span>
+          <span class="cat-eye cat-eye-right"></span>
+          <span class="cat-nose"></span>
+          <span class="cat-whisker whisker-left"></span>
+          <span class="cat-whisker whisker-right"></span>
+        </div>
+        <div class="cat-body"></div>
+        <div class="cat-tail"></div>
+        <div class="cat-paw paw-one"></div>
+        <div class="cat-paw paw-two"></div>
+      </div>
+      <div class="register-message">
+        <h2>Tu mascota se merece cariño y cuidado.</h2>
+        <p>Registrá sus datos para ofrecerle una atención más rápida y personalizada.</p>
+      </div>
+    </aside>
+
+    <main class="register-card">
+      <div class="register-header">
+        <span class="eyebrow">Registro</span>
+        <h1>Registrar mascota</h1>
+        <p>Completá la información para sumar a tu paciente a la clínica.</p>
+      </div>
+
+      <form action="{% url 'registrar_mascota' %}" method="POST" class="appointment-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="nombre">Nombre de la mascota</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Ej. Firulais" required>
+        </div>
+
+        <div class="form-group">
+          <label for="especie">Especie</label>
+          <input type="text" id="especie" name="especie" placeholder="Ej. Perro, Gato, etc." required>
+        </div>
+
+        <div class="form-group">
+          <label for="raza">Raza</label>
+          <input type="text" id="raza" name="raza" placeholder="Ej. Mestizo, Golden Retriever" required>
+        </div>
+
+        <div class="form-group">
+          <label for="edad">Edad</label>
+          <input type="number" id="edad" name="edad" min="0" value="0" required>
+        </div>
+
+        <div class="form-group">
+          <label for="sexo">Sexo</label>
+          <select id="sexo" name="sexo" required>
+            <option value="MACHO">Macho</option>
+            <option value="HEMBRA">Hembra</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="peso">Peso (kg)</label>
+          <input type="number" id="peso" name="peso" min="0" step="0.1" placeholder="Ej. 12.5" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="nombre_dueño">Nombre del dueño</label>
+          <input type="text" id="nombre_dueño" name="nombre_dueño" placeholder="Ej. Juan Pérez" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="telefono_dueño">Teléfono del dueño</label>
+          <input type="tel" id="telefono_dueño" name="telefono_dueño" placeholder="Ej. +56 9 1234 5678">
+        </div>
+
+        <div class="form-group full-width">
+          <label for="descripcion_mascota">Descripción breve de la mascota</label>
+          <textarea id="descripcion_mascota" name="descripcion_mascota" rows="3" placeholder="Ej. Perro muy juguetón, amigable con personas y otros animales."></textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="motivo_consulta">Motivo de consulta / caso</label>
+          <textarea id="motivo_consulta" name="motivo_consulta" rows="4" placeholder="Ej. Se observa fiebre y pérdida de apetito desde hace 2 días..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">🐾 Guardar mascota</button>
+      </form>
+
+      <div class="register-footer">
+        <a href="{% url 'listado_diario' %}">← Volver al listado</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

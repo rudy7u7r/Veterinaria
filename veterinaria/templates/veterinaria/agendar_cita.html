@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendar cita | Huellas Sanas</title>
+  <link rel="stylesheet" href="{% static 'veterinaria/styles.css' %}">
+</head>
+<body class="register-body">
+  <div class="register-shell">
+    <aside class="register-visual">
+      <div class="register-pill">🐾 Huellas Sanas</div>
+      <div class="cat-figure" aria-label="gato mirando al formulario">
+        <div class="cat-head">
+          <span class="cat-ear cat-ear-left"></span>
+          <span class="cat-ear cat-ear-right"></span>
+          <span class="cat-eye cat-eye-left"></span>
+          <span class="cat-eye cat-eye-right"></span>
+          <span class="cat-nose"></span>
+          <span class="cat-whisker whisker-left"></span>
+          <span class="cat-whisker whisker-right"></span>
+        </div>
+        <div class="cat-body"></div>
+        <div class="cat-tail"></div>
+        <div class="cat-paw paw-one"></div>
+        <div class="cat-paw paw-two"></div>
+      </div>
+      <div class="register-message">
+        <h2>Agenda con calma y confianza.</h2>
+        <p>Si la mascota ya está registrada, solo selecciona su nombre y completa la consulta.</p>
+      </div>
+    </aside>
+
+    <main class="register-card">
+      <div class="register-header">
+        <span class="eyebrow">Agenda</span>
+        <h1>Agendar cita</h1>
+        <p>Seleccioná si la mascota ya está registrada o si necesita un nuevo ingreso.</p>
+      </div>
+
+      <form action="{% url 'agendar_cita' %}" method="POST" class="appointment-form">
+        {% csrf_token %}
+
+        <div class="form-group full-width">
+          <label class="checkbox-row">
+            <input type="checkbox" name="ya_registrado" id="ya_registrado">
+            <span>La mascota ya está registrada</span>
+          </label>
+        </div>
+
+        <div class="form-group full-width" id="mascota-existente-block" style="display:none;">
+          <label for="mascota_existente">Mascota registrada</label>
+          <select id="mascota_existente" name="mascota_existente">
+            {% for mascota in mascotas %}
+              <option value="{{ mascota.id }}">{{ mascota.nombre }} - {{ mascota.especie }} - {{ mascota.raza }}</option>
+            {% empty %}
+              <option value="">No hay mascotas registradas</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div class="form-group">
+          <label for="hora">Hora</label>
+          <input type="time" id="hora" name="hora" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="descripcion_mascota">Descripción breve de la mascota</label>
+          <textarea id="descripcion_mascota" name="descripcion_mascota" rows="3" placeholder="Ej. Perro juguetón y muy activo."></textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="motivo_consulta">Motivo de consulta / caso</label>
+          <textarea id="motivo_consulta" name="motivo_consulta" rows="4" placeholder="Ej. Tiene fiebre, pérdida de apetito y molestias al caminar." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="detalle_caso">Detalle del caso</label>
+          <textarea id="detalle_caso" name="detalle_caso" rows="3" placeholder="Ej. Se observó dolor en la zona abdominal desde hace 1 día."></textarea>
+        </div>
+
+        <div id="nueva-mascota-fields" class="split-form">
+          <div class="form-group">
+            <label for="nombre">Nombre de la mascota</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej. Firulais">
+          </div>
+
+          <div class="form-group">
+            <label for="especie">Especie</label>
+            <input type="text" id="especie" name="especie" placeholder="Ej. Perro, Gato">
+          </div>
+
+          <div class="form-group">
+            <label for="raza">Raza</label>
+            <input type="text" id="raza" name="raza" placeholder="Ej. Golden Retriever">
+          </div>
+
+          <div class="form-group">
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" name="edad" min="0" value="0">
+          </div>
+
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select id="sexo" name="sexo">
+              <option value="MACHO">Macho</option>
+              <option value="HEMBRA">Hembra</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="peso">Peso (kg)</label>
+            <input type="number" id="peso" name="peso" min="0" step="0.1" placeholder="Ej. 12.5">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="nombre_dueño">Nombre del dueño</label>
+            <input type="text" id="nombre_dueño" name="nombre_dueño" placeholder="Ej. Juan Pérez">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="telefono_dueño">Teléfono del dueño</label>
+            <input type="tel" id="telefono_dueño" name="telefono_dueño" placeholder="Ej. +56 9 1234 5678">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">🐾 Guardar cita</button>
+      </form>
+
+      <div class="register-footer">
+        <a href="{% url 'listado_diario' %}">← Volver al listado</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById('ya_registrado');
+    const existingBlock = document.getElementById('mascota-existente-block');
+    const newFields = document.getElementById('nueva-mascota-fields');
+
+    checkbox.addEventListener('change', function () {
+      const checked = this.checked;
+      existingBlock.style.display = checked ? 'block' : 'none';
+      newFields.style.display = checked ? 'none' : 'grid';
+
+      if (checked) {
+        ['nombre', 'especie', 'raza', 'edad', 'sexo', 'peso', 'nombre_dueño', 'telefono_dueño'].forEach((id) => {
+          const input = document.getElementById(id);
+          if (input) input.required = false;
+        });
+      } else {
+        ['nombre', 'especie', 'raza', 'edad', 'sexo', 'peso', 'nombre_dueño', 'telefono_dueño'].forEach((id) => {
+          const input = document.getElementById(id);
+          if (input) input.required = true;
+        });
+      }
+    });
+  </script>
+</body>
+</html>

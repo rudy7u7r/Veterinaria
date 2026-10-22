@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huellas Sanas | Agenda veterinaria</title>
+  <link rel="stylesheet" href="{% static 'veterinaria/styles.css' %}">
+</head>
+<body>
+  <div class="vet-layout">
+    <aside class="vet-sidebar left">
+      <div class="brand-box">
+        <div class="brand-icon">🐾</div>
+        <div>
+          <h3>Huellas Sanas</h3>
+          <span>Veterinaria</span>
+        </div>
+      </div>
+
+      <nav class="nav-stack">
+        <a href="{% url 'listado_diario' %}" class="nav-tab active">📅 Agendar cita</a>
+        <a href="{% url 'registrar_mascota' %}" class="nav-tab">🐶 Agregar mascota</a>
+      </nav>
+
+      <div class="mini-card">
+        <p>Atención</p>
+        <strong>08:00 - 18:00</strong>
+      </div>
+    </aside>
+
+    <main class="vet-main">
+      <header class="hero-banner">
+        <div class="hero-copy">
+          <span class="eyebrow">Bienvenido/a</span>
+          <h1>Huellas Sanas</h1>
+          <p>Control diario de citas, seguimiento de pacientes y atención con calma para cada mascota.</p>
+          <div class="hero-actions">
+            <a href="{% url 'agendar_cita' %}" class="primary-btn">+ Agendar cita</a>
+            <a href="{% url 'registrar_mascota' %}" class="ghost-btn">Agregar mascota</a>
+          </div>
+        </div>
+
+        <div class="sleeping-dog" aria-label="perro durmiendo">
+          <div class="cloud cloud-one"></div>
+          <div class="cloud cloud-two"></div>
+          <div class="dog-body"></div>
+          <div class="dog-tail"></div>
+          <div class="dog-head">
+            <span class="ear ear-left"></span>
+            <span class="ear ear-right"></span>
+            <span class="face">
+              <span class="eye eye-left"></span>
+              <span class="eye eye-right"></span>
+              <span class="nose"></span>
+            </span>
+          </div>
+          <div class="dog-paw paw-front"></div>
+          <div class="dog-paw paw-back"></div>
+          <div class="dog-paw paw-back-two"></div>
+          <div class="dog-bubble">ZzZ</div>
+        </div>
+      </header>
+
+      <section class="stats-row">
+        <div class="stat-box">
+          <span>Total citas</span>
+          <strong>{{ total_citas }}</strong>
+        </div>
+        <div class="stat-box accent">
+          <span>Urgencias</span>
+          <strong>{{ urgencias }}</strong>
+        </div>
+        <div class="stat-box success">
+          <span>Pacientes</span>
+          <strong>{{ pacientes }}</strong>
+        </div>
+      </section>
+
+      <section class="content-panel">
+        <div class="panel-header">
+          <div>
+            <span class="small-label">Hoy</span>
+            <h2>Citas del día</h2>
+          </div>
+          <span class="date-pill">{{ hoy }}</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Mascota</th>
+                <th>Hora</th>
+                <th>Motivo de consulta</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cita in citas %}
+              <tr>
+                <td>#{{ cita.id }}</td>
+                <td><strong>{{ cita.mascota }}</strong></td>
+                <td>{{ cita.hora }}</td>
+                <td>{{ cita.motivo_consulta }}</td>
+                <td><span class="badge badge-confirmed">{{ cita.estado }}</span></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">
+                  No hay citas programadas para el día de hoy.
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <aside class="vet-sidebar right">
+      <div class="status-card">
+        <span class="small-label">Estado</span>
+        <h3>Resumen</h3>
+      </div>
+
+      <div class="mini-stat">
+        <strong>{{ total_citas }}</strong>
+        <span>Total citas</span>
+      </div>
+      <div class="mini-stat accent">
+        <strong>{{ urgencias }}</strong>
+        <span>Urgencias</span>
+      </div>
+      <div class="mini-stat soft">
+        <strong>{{ pacientes }}</strong>
+        <span>Pacientes</span>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

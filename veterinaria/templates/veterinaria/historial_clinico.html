@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial clínico | Huellas Sanas</title>
+  <link rel="stylesheet" href="{% static 'veterinaria/styles.css' %}">
+</head>
+<body class="history-body">
+  <div class="history-shell">
+    <header class="history-header">
+      <div>
+        <span class="eyebrow">Historial</span>
+        <h1>Historial clínico</h1>
+      </div>
+      <a href="{% url 'listado_diario' %}" class="ghost-btn">← Volver a agenda</a>
+    </header>
+
+    <section class="history-list">
+      {% for cita in citas %}
+      <article class="history-card">
+        <div class="history-top">
+          <div>
+            <span class="small-label">Mascota</span>
+            <h2>{{ cita.mascota.nombre }}</h2>
+          </div>
+          <span class="badge badge-confirmed">{{ cita.estado }}</span>
+        </div>
+
+        <div class="history-grid">
+          <div>
+            <span class="field-label">Especie</span>
+            <p>{{ cita.mascota.especie }}</p>
+          </div>
+          <div>
+            <span class="field-label">Raza</span>
+            <p>{{ cita.mascota.raza }}</p>
+          </div>
+          <div>
+            <span class="field-label">Fecha</span>
+            <p>{{ cita.fecha }}</p>
+          </div>
+          <div>
+            <span class="field-label">Hora</span>
+            <p>{{ cita.hora }}</p>
+          </div>
+        </div>
+
+        <div class="history-block">
+          <span class="field-label">Descripción breve</span>
+          <p>{{ cita.descripcion_mascota|default:'Sin descripción registrada.' }}</p>
+        </div>
+
+        <div class="history-block">
+          <span class="field-label">Motivo de consulta / caso</span>
+          <p>{{ cita.motivo_consulta|default:'Sin motivo registrado.' }}</p>
+        </div>
+
+        <div class="history-block">
+          <span class="field-label">Detalle del caso</span>
+          <p>{{ cita.detalle_caso|default:'Sin detalle adicional.' }}</p>
+        </div>
+      </article>
+      {% empty %}
+      <div class="empty-history">
+        <p>No hay historial clínico registrado todavía.</p>
+      </div>
+      {% endfor %}
+    </section>
+  </div>
+</body>
+</html>
